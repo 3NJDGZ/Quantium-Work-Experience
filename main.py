@@ -50,7 +50,7 @@ with open('data/daily_sales_data_2.csv', 'r') as file:
             filtered_row.insert(0, total)
             filtered_data.append(filtered_row)
 
-with open('test.csv', 'w', newline='') as file:
+with open('dataprocessed.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(["sales", "date", "region"])
     for i in range(len(filtered_data)):
