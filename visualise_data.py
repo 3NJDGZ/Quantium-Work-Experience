@@ -1,31 +1,29 @@
-import dash
-import pandas as pd 
-from dash import dcc
-from dash import html
-from plotly import graph_objs as go
+from dash import Dash, dcc, html, Input, Output
+import plotly.express as px
 
-# Load the data
-df = pd.read_csv('dataprocessed.csv')
+import pandas as pd
 
-# Create the Dash app
-app = dash.Dash()
+app = Dash(__name__)
 
-# Define the layout of the app
 app.layout = html.Div([
-  # Add the line chart
-  dcc.Graph(
-    id='line-chart',
-    figure={
-      'data': [
-        {'x': df['date'], 'y': df['sales'], 'type': 'line', 'name': 'Total Sales'}
-      ],
-      'layout': {
-        'title': 'Pink Morsel Sales Over Time'
-      }
-    }
-  )
+    html.H4("Pink Morsel Sales per Regions"),
+    dcc.Graph(id="graph"),
+    dcc.Checklist(
+        id="checklist",
+        options=["north", "east", "south", "west"],
+        inline=True
+    ),
 ])
 
-# Run the app
-if __name__ == '__main__':
-  app.run_server(debug=True)
+@app.callback(
+    Output("graph", "figure"), 
+    Input("checklist", "value"))
+def update_line_chart(regions):
+    df = pd.read_csv("dataprocessed.csv") # replace with your own data source
+    mask = df.region.isin(regions)
+    fig = px.line(df[mask], 
+        x="date", y="sales", color='region')
+    return fig
+
+
+app.run_server(debug=True)
