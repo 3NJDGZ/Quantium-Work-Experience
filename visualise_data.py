@@ -5,7 +5,6 @@ from dash import html
 
 # Load the data
 df = pd.read_csv('dataprocessed.csv')
-print(df.head())
 
 # Create the Dash app
 app = dash.Dash()
@@ -20,7 +19,7 @@ app.layout = html.Div([
         {'x': df['date'], 'y': df['sales'], 'type': 'line', 'name': 'Total Sales'}
       ],
       'layout': {
-        'title': 'Sales Generated Over Time'
+        'title': 'Pink Morsel Sales Over Time'
       }
     }
   )
