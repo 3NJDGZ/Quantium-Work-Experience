@@ -1,35 +1,29 @@
-import dash
-from dash import dcc
-from dash import html
-from plotly import graph_objs as go
+from dash import Dash, dcc, html, Input, Output
+import plotly.express as px
 
 import pandas as pd
 
-df = pd.DataFrame({
-    'x': [1, 2, 3, 4, 5],
-    'y1': [1, 4, 9, 16, 25],
-    'y2': [2, 8, 18, 32, 50],
-    'group': ['A', 'A', 'A', 'B', 'B']
-})
-def create_figure(df):
-    traces = []
-    groups = df['group'].unique()
-    for group in groups:
-        df_group = df[df['group'] == group]
-        traces.append(go.Scatter(
-            x=df_group['x'],
-            y=df_group['y1'],
-            name=f'y1 ({group})'
-        ))
-        traces.append(go.Scatter(
-            x=df_group['x'],
-            y=df_group['y2'],
-            name=f'y2 ({group})'
-        ))
-    return go.Figure(data=traces)
-app = dash.Dash()
+app = Dash(__name__)
 
 app.layout = html.Div([
-    dcc.Graph(id='line-graph', figure=create_figure(df))
+    html.H4("Pink Morsel Sales per Regions"),
+    dcc.Graph(id="graph"),
+    dcc.Checklist(
+        id="checklist",
+        options=["north", "east", "south", "west"],
+        inline=True
+    ),
 ])
-app.run_server()
+
+@app.callback(
+    Output("graph", "figure"), 
+    Input("checklist", "value"))
+def update_line_chart(regions):
+    df = pd.read_csv("dataprocessed.csv") # replace with your own data source
+    mask = df.region.isin(regions)
+    fig = px.line(df[mask], 
+        x="date", y="sales", color='region')
+    return fig
+
+
+app.run_server(debug=True)
