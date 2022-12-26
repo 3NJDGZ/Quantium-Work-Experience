@@ -2,6 +2,7 @@ import dash
 import pandas as pd 
 from dash import dcc
 from dash import html
+from plotly import graph_objs as go
 
 # Load the data
 df = pd.read_csv('dataprocessed.csv')
