@@ -1,9 +1,7 @@
 import dash
-import csv
 import pandas as pd 
 from dash import dcc
 from dash import html
-import plotly.express as px
 
 # Load the data
 df = pd.read_csv('dataprocessed.csv')
