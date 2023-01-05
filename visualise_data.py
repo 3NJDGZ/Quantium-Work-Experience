@@ -51,5 +51,4 @@ def update_line_chart(regions):
 #
 # unittest.main()
 
-
 app.run_server(debug=True)
