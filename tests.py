@@ -18,5 +18,6 @@ class TestVisualiseData(unittest.TestCase):
         element = app.driver.find_elements_by_css_selector("#region_picker")
         self.assertTrue(element)
 
+
 if __name__ == '__main__':
     unittest.main()
